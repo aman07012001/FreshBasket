@@ -1,0 +1,429 @@
+/* Order Components Enhanced Mobile Styles */
+
+/* Base order component styles */
+.order-container {
+  /* Container spacing for mobile */
+}
+
+/* Enhanced mobile responsiveness for order cards */
+.order-card {
+  transition: all 0.2s ease-in-out;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Touch-friendly interactions */
+.order-card:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+  .order-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .order-id {
+    font-size: 14px;
+    word-break: break-all;
+  }
+
+  .order-total {
+    font-size: 20px;
+  }
+
+  .order-status {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .order-details {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .order-details-item {
+    padding: 12px;
+  }
+
+  .order-items {
+    margin-top: 12px;
+  }
+
+  .order-item {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .order-item-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .order-actions {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .order-button {
+    padding: 12px 16px;
+    font-size: 14px;
+    min-height: 44px; /* Touch target minimum */
+  }
+
+  .status-select {
+    padding: 12px 16px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  /* Mobile pagination */
+  .pagination {
+    gap: 8px;
+  }
+
+  .pagination button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  /* Mobile filter controls */
+  .filter-controls {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .filter-select {
+    padding: 12px 16px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  /* Mobile empty states */
+  .empty-state {
+    padding: 24px;
+  }
+
+  .empty-state-title {
+    font-size: 20px;
+  }
+
+  .empty-state-message {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .empty-state-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .empty-state-button {
+    padding: 14px 18px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+
+  /* Mobile loading states */
+  .loading-skeleton {
+    padding: 16px;
+  }
+
+  .skeleton-item {
+    height: 120px;
+    margin-bottom: 12px;
+  }
+
+  /* Touch-friendly form elements */
+  .form-select,
+  .form-input {
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .form-select:focus,
+  .form-input:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  }
+
+  /* Enhanced touch feedback */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: all 0.15s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .touch-target:active {
+    background-color: #f3f4f6;
+    transform: scale(0.98);
+  }
+
+  .touch-target:hover {
+    background-color: #f9fafb;
+  }
+
+  /* Mobile navigation */
+  .mobile-nav {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 12px;
+  }
+
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .mobile-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .mobile-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* Swipe gestures support (CSS only) */
+  .swipe-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .swipe-content {
+    min-width: 100%;
+  }
+
+  /* Mobile table improvements */
+  .mobile-table {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .mobile-table thead {
+    position: sticky;
+    top: 0;
+    background: #f9fafb;
+    z-index: 5;
+  }
+
+  .mobile-table th,
+  .mobile-table td {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .mobile-table tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .mobile-table tr:last-child {
+    border-bottom: none;
+  }
+
+  /* Responsive typography */
+  .text-display {
+    font-size: clamp(18px, 4vw, 24px);
+    font-weight: 700;
+  }
+
+  .text-heading {
+    font-size: clamp(16px, 3.5vw, 20px);
+    font-weight: 600;
+  }
+
+  .text-body {
+    font-size: clamp(14px, 2.5vw, 16px);
+  }
+
+  .text-small {
+    font-size: clamp(12px, 2vw, 14px);
+  }
+
+  /* Accessibility improvements */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .focus-visible:focus {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .order-card {
+      border-width: 2px;
+    }
+
+    .touch-target {
+      border: 2px solid currentColor;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .order-card {
+      transition: none;
+    }
+
+    .order-card:hover {
+      transform: none;
+    }
+
+    .touch-target:active {
+      transform: none;
+    }
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .order-card {
+      background: #111827;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .order-details-item {
+      background: #1f2937;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .form-select,
+    .form-input {
+      background: #1f2937;
+      border-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .order-card {
+    padding: 20px;
+  }
+
+  .order-header {
+    gap: 16px;
+  }
+
+  .order-item-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .order-actions {
+    gap: 12px;
+  }
+
+  .order-button,
+  .status-select {
+    min-height: 48px;
+  }
+}
+
+/* Desktop hover effects */
+@media (min-width: 1025px) {
+  .order-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .order-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .touch-target:hover {
+    background-color: #f3f4f6;
+  }
+
+  .touch-target:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Print styles */
+@media print {
+  .order-card {
+    box-shadow: none;
+    border: 1px solid #000000;
+    break-inside: avoid;
+  }
+
+  .order-actions,
+  .pagination,
+  .filter-controls {
+    display: none;
+  }
+}
+
+/* Focus management for better UX */
+.order-card:focus-within {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  border-color: #10b981;
+}
+
+/* Smooth scrolling for long lists */
+.order-list {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit browsers */
+.order-list::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.order-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.order-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.order-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
