@@ -36,6 +36,9 @@ exports.getAll = async (req, res) => {
     if (req.query.category) {
       filter.category = req.query.category;
     }
+    if (req.query.search) {
+      filter.name = { $regex: req.query.search, $options: 'i' };
+    }
 
     const products = await Product.find(filter).sort({ category: 1, name: 1 });
     res.json({ products });

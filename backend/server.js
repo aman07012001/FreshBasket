@@ -8,6 +8,11 @@ const authRoutes = require('./routes/auth');
 const ordersRoutes = require('./routes/orders');
 const cartRoutes = require('./routes/cart');
 const categoryRoutes = require('./routes/categories');
+const productRoutes = require('./routes/products');
+const inventoryRoutes = require('./routes/inventory');
+const reviewsRoutes = require('./routes/reviews');
+const uploadRoutes = require('./routes/upload');
+const emailStatusRoutes = require('./routes/emailStatus');
 const { router: monitoringRouter, trackPerformance } = require('./routes/monitoring');
 const { env } = require('./config');
 const { initializeWebSocket } = require('./services/websocketService');
@@ -53,7 +58,6 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     optionsSuccessStatus: 200,
     maxAge: 86400,
-
   })
 );
 
@@ -63,12 +67,15 @@ console.log('🍪 Cookie parser middleware loaded');
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
-
 app.use('/api/orders', ordersRoutes);
-
 app.use('/api/cart', cartRoutes);
-
 app.use('/api/categories', categoryRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/reviews', reviewsRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/email', emailStatusRoutes);
+app.use('/api/monitoring', monitoringRouter);
 
 app.get('/health', (req, res) => {
   res.json({
@@ -78,35 +85,13 @@ app.get('/health', (req, res) => {
   });
 });
 
-app.use('/api/monitoring', monitoringRouter);
-
-console.log('🔍 Registered routes:');
-app._router?.stack?.forEach((middleware) => {
-  if (middleware.route) {
-
-    console.log(`  Middleware type: ${typeof middleware.route}`);
-    console.log(`  Methods type: ${typeof middleware.route.methods}`);
-    console.log(`  Methods value:`, middleware.route.methods);
-    console.log(`  Methods keys:`, Object.keys(middleware.route.methods));
-
-    if (Array.isArray(middleware.route.methods)) {
-      console.log(`  ✅ ${middleware.route.methods.join(', ').toUpperCase()} ${middleware.route.path}`);
-    } else if (typeof middleware.route.methods === 'object') {
-      const methodsArray = Object.keys(middleware.route.methods).filter(key => middleware.route.methods[key]);
-      console.log(`  🔧 ${methodsArray.join(', ').toUpperCase()} ${middleware.route.path}`);
-    } else {
-      console.log(`  ❌ Unknown methods format for path: ${middleware.route.path}`);
-    }
-  }
-});
-
 const mongooseOptions = {
-  serverSelectionTimeoutMS: 5000, 
-  socketTimeoutMS: 45000,         
-  connectTimeoutMS: 10000,        
-  maxPoolSize: 10,                
-  minPoolSize: 5,                 
-  bufferCommands: false,          
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 10000,
+  maxPoolSize: 10,
+  minPoolSize: 5,
+  bufferCommands: false,
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
@@ -124,9 +109,7 @@ mongoose
     console.log('✅ Connected to MongoDB');
 
     dbMonitor.init();
-
     dbMonitor.testConnection();
-
     console.log('📊 MongoDB Stats:', dbMonitor.getConnectionStats());
 
     const io = initializeWebSocket(httpServer);
@@ -136,13 +119,13 @@ mongoose
     console.log(`Process ID: ${process.pid}`);
     console.log(`Node.js version: ${process.version}`);
 
-        function startServer(port, retryCount = 0) {
-          httpServer.listen(port, () => {
-            const startupTime = Date.now() - serverStart;
-            console.log(`✅ PayPal Order Server running on port ${port}`);
-            console.log(`🚀 Server startup completed in ${startupTime}ms`);
-            console.log('WebSocket server initialized');
-          });
+    function startServer(port, retryCount = 0) {
+      httpServer.listen(port, () => {
+        const startupTime = Date.now() - serverStart;
+        console.log(`✅ PayPal Order Server running on port ${port}`);
+        console.log(`🚀 Server startup completed in ${startupTime}ms`);
+        console.log('WebSocket server initialized');
+      });
 
       httpServer.on('error', (err) => {
         if (err.code === 'EADDRINUSE' && retryCount < 3) {
@@ -155,23 +138,16 @@ mongoose
           });
         } else if (err.code === 'EADDRINUSE') {
           console.error(`❌ Failed to start server after 3 retries. All ports from ${PORT} to ${PORT + 2} are in use.`);
-          console.error(`🔍 Checking for processes on these ports...`);
 
           const { exec } = require('child_process');
           const command = process.platform === 'win32'
             ? `netstat -ano | findstr :${PORT}`
             : `lsof -i :${PORT}`;
 
-          exec(command, (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Failed to check port usage: ${error.message}`);
-              return;
-            }
+          exec(command, (error, stdout) => {
             if (stdout) {
               console.log(`Processes using port ${PORT}:`);
               console.log(stdout);
-            } else {
-              console.log(`No processes found on port ${PORT}`);
             }
           });
 

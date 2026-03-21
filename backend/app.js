@@ -11,6 +11,7 @@ const reviewsRoutes = require('./routes/reviews');
 const inventoryRoutes = require('./routes/inventory');
 const cartRoutes = require('./routes/cart');
 const productRoutes = require('./routes/products');
+const categoryRoutes = require('./routes/categories');
 const { env } = require('./config');
 const { checkTransport } = require('./utils/emailService');
 const { getQueueHealth } = require('./queue/queueConfig');
@@ -35,6 +36,8 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/cart', cartRoutes);
 
 app.use('/api/products', productRoutes);
+
+app.use('/api/categories', categoryRoutes);
 
 app.get('/health', async (req, res) => {
   const emailHealth = await checkTransport();

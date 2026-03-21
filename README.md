@@ -92,7 +92,8 @@ The frontend provides an intuitive shopping layout with extensive account and or
   - **Public Pages**: `/home`, `/products`, `/categories`, `/about`, Auth flows (`/login`, `/signup`, `/forgot-password`, `/reset`, `/verify-email`)
   - **Protected Pages**: `/cart`, `/checkout`, `/my-orders`, `/admin/orders`, `/admin/inventory`, `/sessions`, `/user-details`
 - **Data Layer (Products & Categories)**: 
-  - Currently, product inventory and category mapping are populated via local static mapped arrays (e.g., `store/products.js`), ensuring blazing fast loads.
+  - Product inventory and categories are fully dynamic and fetched securely from the backend REST API, backed by MongoDB.
+  - Image assets are documented in `image.md` to track available and missing product images.
 - **Cart Management**: 
   - The cart relies entirely on efficient frontend state logic, avoiding constant backend pings until checkout.
 - **Auth context**: 
@@ -149,6 +150,6 @@ For step-by-step instructions, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md
   - **Authentication**: High security JWT infrastructure over HTTP-only cookies, with complete fallback/revoke capability.
   - **Orders & Inventory**: Robust checkout processes that properly adjust stock levels and enable admin supervision.
   - **Auxiliary Systems**: Complete email notification engines, user reviews, and app monitoring are deployed.
-- **Static Design Choices**:
-  - Product browsing and cart management prioritize a responsive, frontend-first approach natively mapped in React, reducing unnecessary DB overhead.
+- **Design Choices**:
+  - While product browsing is dynamically powered by our backend API, cart management prioritizes an efficient frontend-first approach natively mapped in React, avoiding constant DB overhead until checkout.
 - Overall, FreshBasket represents a highly structured, scalable full-stack application leveraging best-in-class React and Node.js practices.

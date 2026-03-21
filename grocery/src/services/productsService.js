@@ -43,8 +43,8 @@ export async function getProductsByCategoryKey(categoryKey) {
 
     if (categoryKey) {
       const normalizedKey  = String(categoryKey).toLowerCase();
-      const categoryName   = CATEGORY_KEY_MAP[normalizedKey];
-      if (!categoryName) return [];
+      const categoryName   = CATEGORY_KEY_MAP[normalizedKey]
+        ?? (categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1).toLowerCase());
       params.category = categoryName;
     }
 

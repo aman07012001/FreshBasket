@@ -15,10 +15,14 @@ const Products = ({ categoryProducts }) => {
 
     const { errorMessage, hasError, setApiError, clearError } = useApiError();
 
-    const { query, setQuery, results } = useSearch(products, { keys: ['name', 'category'] });
+    const { query, setQuery, results, resetQuery } = useSearch(products, { keys: ['name', 'category'] });
     const hasNoResults = !isLoading && results.length === 0 && query.trim();
 
     window.scroll({ top: 0 });
+
+    useEffect(() => {
+        resetQuery();
+    }, [categoryName]);
 
     useEffect(() => {
         let isMounted = true;

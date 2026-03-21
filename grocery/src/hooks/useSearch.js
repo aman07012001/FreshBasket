@@ -18,5 +18,5 @@ export function useSearch(items, { keys = ["name", "category"] } = {}) {
     });
   }, [items, normalizedQuery, JSON.stringify(keys)]);
 
-  return { query, setQuery, results };
+  return { query, setQuery, results, resetQuery: () => setQuery("") };
 }

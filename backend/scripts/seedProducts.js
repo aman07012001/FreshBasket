@@ -11,9 +11,8 @@ const STATIC_PRODUCTS = [
   {
     category: 'Meat',
     items: [
-      { name: 'Beef Meat',    price: 10.99, unit: 'kg', reviews: 4.5, reviewCount: 25, stock: 50 },
       { name: 'Chicken Meat', price: 8.99,  unit: 'kg', reviews: 4.2, reviewCount: 18, stock: 80 },
-      { name: 'Pork Meat',    price: 7.99,  unit: 'kg', reviews: 4.0, reviewCount: 15, stock: 40 },
+      { name: 'Crab Meat',    price: 14.99, unit: 'kg', reviews: 4.6, reviewCount: 20, stock: 35 },
       { name: 'Lamb Meat',    price: 12.99, unit: 'kg', reviews: 4.8, reviewCount: 32, stock: 30 },
     ],
   },
