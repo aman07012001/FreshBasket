@@ -4,7 +4,7 @@ export const reviewsApi = {
 
   getProductReviews: async (productId, options = {}) => {
     const params = new URLSearchParams(options);
-    const response = await api.get(`/api/reviews/product/${productId}?${params}`);
+    const response = await api.get(`reviews/product/${productId}?${params}`);
     if (response.error) {
       throw new Error(response.message || 'Failed to fetch reviews');
     }
@@ -12,7 +12,7 @@ export const reviewsApi = {
   },
 
   getProductRating: async (productId) => {
-    const response = await api.get(`/api/reviews/product/${productId}/rating`);
+    const response = await api.get(`reviews/product/${productId}/rating`);
     if (response.error) {
       throw new Error(response.message || 'Failed to fetch rating');
     }
@@ -20,7 +20,7 @@ export const reviewsApi = {
   },
 
   createReview: async (productId, reviewData) => {
-    const response = await api.post('/api/reviews', {
+    const response = await api.post('reviews', {
       productId,
       ...reviewData
     });
@@ -31,7 +31,7 @@ export const reviewsApi = {
   },
 
   updateReview: async (reviewId, reviewData) => {
-    const response = await api.put(`/api/reviews/${reviewId}`, reviewData);
+    const response = await api.put(`reviews/${reviewId}`, reviewData);
     if (response.error) {
       throw new Error(response.message || 'Failed to update review');
     }
@@ -39,7 +39,7 @@ export const reviewsApi = {
   },
 
   deleteReview: async (reviewId) => {
-    const response = await api.delete(`/api/reviews/${reviewId}`);
+    const response = await api.delete(`reviews/${reviewId}`);
     if (response.error) {
       throw new Error(response.message || 'Failed to delete review');
     }
@@ -47,7 +47,7 @@ export const reviewsApi = {
   },
 
   getPendingReviews: async () => {
-    const response = await api.get('/api/reviews/pending');
+    const response = await api.get('reviews/pending');
     if (response.error) {
       throw new Error(response.message || 'Failed to fetch pending reviews');
     }
@@ -55,7 +55,7 @@ export const reviewsApi = {
   },
 
   moderateReview: async (reviewId, status, reason) => {
-    const response = await api.put(`/api/reviews/${reviewId}/moderate`, {
+    const response = await api.put(`reviews/${reviewId}/moderate`, {
       status,
       reason
     });

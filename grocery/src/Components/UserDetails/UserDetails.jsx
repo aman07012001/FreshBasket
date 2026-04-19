@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { apiRequest } from '../../utils/api';
+import { apiRequest, api } from '../../utils/api';
 import { useToast } from '../SuccessAlert/SuccessAlert';
 import { useNavigate } from 'react-router-dom';
 
@@ -100,19 +100,13 @@ const UserDetails = () => {
     uploadData.append('file', file);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/upload/single`, {
-        method: 'POST',
-        credentials: 'include',
-        body: uploadData,
-      });
+      const data = await api.upload('upload/single', uploadData);
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
+      if (data && !data.error && data.success) {
         setFormData(prev => ({ ...prev, avatar: data.data.secure_url }));
         toast.success('Image uploaded successfully! Click Save to apply.');
       } else {
-        throw new Error(data.message || 'Failed to upload image');
+        throw new Error(data?.message || 'Failed to upload image');
       }
     } catch (err) {
       console.error('Upload error:', err);
@@ -126,29 +120,19 @@ const UserDetails = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          address: formData.address,
-          avatar: formData.avatar
-        }), 
+      const data = await api.put('auth/me', {
+        name: formData.name,
+        phone: formData.phone,
+        address: formData.address,
+        avatar: formData.avatar
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (data && !data.error) {
         toast.success('Profile updated successfully');
         setIsEditing(false);
-
         window.location.reload();
       } else {
-        throw new Error(data.error || 'Failed to update profile');
+        throw new Error(data?.message || 'Failed to update profile');
       }
     } catch (err) {
       console.error('Update profile error:', err);

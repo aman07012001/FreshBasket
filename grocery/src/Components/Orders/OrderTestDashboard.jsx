@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../SuccessAlert/SuccessAlert';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 function OrderTestDashboard() {
   const { user } = useAuth();
   const [testOrder, setTestOrder] = useState(null);
@@ -41,7 +43,7 @@ function OrderTestDashboard() {
 
     setIsCreatingOrder(true);
     try {
-      const response = await fetch('http://localhost:5000/api/orders/', {
+      const response = await fetch(`${API_BASE_URL}/api/orders/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +72,7 @@ function OrderTestDashboard() {
     if (!testOrder) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${testOrder.orderId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/orders/${testOrder.orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

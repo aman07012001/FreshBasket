@@ -6,7 +6,7 @@ import { handleSessionStorage } from "../../utils/utils";
 import { AuthContext } from "../../context/AuthContext";
 import { fetchCart, addToCart } from "../../services/cartService";
 
-console.log('Creating groceryContext and FreshBasketContext');
+
 
 export const groceryContext = createContext();
 export const FreshBasketContext = createContext(); 
@@ -17,7 +17,6 @@ const Layout = () => {
     const [cartItems, setCartItems] = useState(cartItemsFromSessionStorage);
     const { user } = useContext(AuthContext);
 
-    console.log('Layout rendering with FreshBasketContext:', FreshBasketContext);
 
     useEffect(() => {
         if (!user) return; 

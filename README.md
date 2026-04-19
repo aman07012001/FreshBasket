@@ -1,155 +1,128 @@
-# FreshBasket E‑Commerce Application
+# FreshBasket 🛒
 
-**Made by Aman Gusain**
+![React](https://img.shields.io/badge/React-18.2-blue?logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)
+![Express](https://img.shields.io/badge/Express-4.18-lightgrey?logo=express)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-green?logo=mongodb)
+![Vite](https://img.shields.io/badge/Vite-4.0-purple?logo=vite)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3-cyan?logo=tailwindcss)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-Full‑stack FreshBasket e-commerce application designed to provide a seamless grocery shopping experience.
+A modern, full-stack E-Commerce application designed to provide a seamless and highly responsive grocery shopping experience. Built with a robust **Node.js/Express** backend and a lightning-fast **React/Vite** frontend.
 
-- **Backend**: Node.js, Express, MongoDB (Mongoose), JWT (HTTP‑only cookies), Redis (optional), Nodemailer, Zod, Multer
-- **Frontend**: React (Vite), React Router, React Hook Form, Yup, Material‑UI, TailwindCSS, PayPal SDK
+## 🌟 Key Features
 
-Authentication is standardized as **HTTP‑only cookie auth** with an optional Bearer fallback.
+- **Advanced Authentication**: Highly secure JWT infrastructure over HTTP-Only cookies with session management.
+- **Product & Inventory Management**: Dynamic product catalog with category filtering, automated stock tracking, and real-time restock alerts.
+- **Shopping Cart & Checkout**: Efficient state-managed cart and seamless PayPal checkout integration.
+- **Admin Dashboard**: Comprehensive admin capabilities for order tracking, inventory assessment, and product moderation.
+- **Automated Emails**: Redis-backed email queue for order confirmations and password resets (via Nodemailer).
+- **Ratings & Reviews**: Built-in customer review and rating system.
 
 ---
 
-## 1. Repository Structure
+## 🛠️ Tech Stack
 
-```text
-d:\FreshBasket
- ├── backend/       # Node.js + Express API
- └── grocery/       # React + Vite frontend
+### Frontend (`/grocery`)
+- **Framework**: React.js (Vite)
+- **Styling**: TailwindCSS & Material-UI
+- **Form Handling**: React Hook Form & Yup validation
+- **Routing**: React Router DOM
+- **Payments**: PayPal SDK
+
+### Backend (`/backend`)
+- **Server**: Node.js & Express
+- **Database**: MongoDB (Mongoose ORM)
+- **Security**: JWT, HTTP-Only Cookies, Zod validation
+- **Services**: Cloudinary (Image Uploads), BullMQ/Redis (Task Queues)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+Make sure you have installed:
+- [Node.js](https://nodejs.org/en/) (v18 or higher)
+- [MongoDB](https://www.mongodb.com/) (Local or Atlas)
+- A [Cloudinary](https://cloudinary.com/) account (for images)
+- A [PayPal Developer](https://developer.paypal.com/) account (for checkout)
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/FreshBasket.git
+cd FreshBasket
 ```
 
----
-
-## 2. Setup
-
-### 2.1 Prerequisites
-
-- Node.js 18+
-- MongoDB (local installation or MongoDB Atlas account)
-- Internet connection
-
-### 2.2 Easy Setup Instructions
-
-For detailed setup instructions, please refer to our comprehensive guides:
-- [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md) - Complete setup guide
-- [EMAIL_SETUP_INSTRUCTIONS.md](EMAIL_SETUP_INSTRUCTIONS.md) - Email and database specific setup
-
-### 2.3 Backend
-
+### 2. Backend Setup
+Navigate to the backend directory and install dependencies:
 ```bash
 cd backend
 npm install
-# Create and configure your .env file (see SETUP_INSTRUCTIONS.md)
-npm start         # http://localhost:5000
+```
+Create a `.env` file in the `backend/` directory. See `SETUP_INSTRUCTIONS.md` for a full list of required variables, or use this quick template:
+```env
+PORT=4000
+MONGO_URL=your_mongodb_uri
+JWT_SECRET=your_super_secret_jwt_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+CORS_ORIGIN=http://localhost:5173
+```
+Start the backend server:
+```bash
+npm start
 ```
 
-### 2.4 Frontend
-
+### 3. Frontend Setup
+Open a new terminal, navigate to the frontend directory, and install dependencies:
 ```bash
 cd grocery
 npm install
-# Create and configure your .env file (see SETUP_INSTRUCTIONS.md)
-npm run dev         # http://localhost:5173
+```
+Create a `.env` file in the `grocery/` directory:
+```env
+VITE_API_BASE_URL=http://localhost:4000/api
+VITE_PAYPAL_CLIENT_ID=your_paypal_client_id
+```
+Start the development server:
+```bash
+npm run dev
+```
+Your frontend will now be running on `http://localhost:5173`.
+
+---
+
+## 📂 Project Structure
+
+```text
+FreshBasket/
+├── backend/                  # Node.js REST API
+│   ├── controllers/          # Request handlers
+│   ├── models/               # Mongoose schemas
+│   ├── routes/               # API endpoint definitions
+│   └── server.js             # Entry point
+├── grocery/                  # Vite React Frontend
+│   ├── src/
+│   │   ├── components/       # Reusable UI components
+│   │   ├── pages/            # Page layouts
+│   │   └── context/          # React Context (Auth, Cart, etc.)
+├── SETUP_INSTRUCTIONS.md     # Detailed local setup guides
+└── deploy.md                 # Deployment instructions
 ```
 
 ---
 
-## 3. Backend Overview (`backend/`)
+## 🚢 Deployment
 
-The backend provides a robust and secure RESTful API with the following key endpoints and features:
-
-### 3.1 Entry & Config
-
-- **`server.js`**
-  - Loads `.env`
-  - Connects to MongoDB (`MONGO_URL`) with tailored connection pooling and timeouts.
-  - Starts the Express app imported from `app.js`
-
-- **`app.js`**
-  - Sets up CORS with `credentials: true` (origins from `CORS_ORIGIN`), `cookie-parser`, and `express.json()`
-  - Mounts all core subsystems:
-    - `/api/auth` → Authentication routes (Login, Register, Password Reset, Email Verification, Session Revocation)
-    - `/api/orders` → Order routes (Create, View, Cancel, Admin updates)
-    - `/api/upload` → File upload routing for handling images using Multer
-    - `/api/email` → Email delivery status and diagnostics tracking
-    - `/api/reviews` → Product reviews, ratings, and admin moderation
-    - `/api/inventory` → Inventory stock tracking, restock, reservation, and alerts
-    - `/api/monitoring` → Application performance monitoring, tracking slow requests and DB query times
-  - `GET /health` → returns system health `{ status, timestamp, service, email: { ok, error? } }`
-
-- **`config.js`**
-  - Uses **Zod** to validate environment configurations including `MONGO_URL`, `JWT_SECRET`, CORS origins, and SMTP settings.
+Ready to go live? Check out our comprehensive [Deployment Guide](deploy.md) for step-by-step instructions on deploying the frontend and backend to **Render**.
 
 ---
 
-## 4. Frontend Overview (`grocery/`)
+## 📝 License
 
-The frontend provides an intuitive shopping layout with extensive account and ordering capabilities:
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- **Entrypoint**: `src/main.jsx` wires up `AuthProvider`, routing, and the PayPal provider.
-- **Routing (`src/App.jsx`)**:
-  - **Public Pages**: `/home`, `/products`, `/categories`, `/about`, Auth flows (`/login`, `/signup`, `/forgot-password`, `/reset`, `/verify-email`)
-  - **Protected Pages**: `/cart`, `/checkout`, `/my-orders`, `/admin/orders`, `/admin/inventory`, `/sessions`, `/user-details`
-- **Data Layer (Products & Categories)**: 
-  - Product inventory and categories are fully dynamic and fetched securely from the backend REST API, backed by MongoDB.
-  - Image assets are documented in `image.md` to track available and missing product images.
-- **Cart Management**: 
-  - The cart relies entirely on efficient frontend state logic, avoiding constant backend pings until checkout.
-- **Auth context**: 
-  - `AuthContext` + `useAuth` wrap login, logout, password reset, email verification, and session UI safely via HTTP-only cookies without exposing tokens in JavaScript global variables.
-- **Admin Capabilities**:
-  - Contains robust dashboards for order tracking (`/admin/orders`) and inventory assessment (`/admin/inventory`).
+## 👨‍💻 Author
 
----
-
-## 5. Environment Variables
-
-The app uses environment variables for backend configuration, email, cookies, Redis, and frontend integrations. You must create `.env` files for both `backend/` and `grocery/` before running the app.
-
-### Important Notice About Environment Configuration
-
-**Please follow the detailed setup instructions in [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md) to properly configure your environment variables.**
-
-Common issues with the password reset functionality are caused by:
-1. Incorrect MongoDB connection configuration
-2. Missing or incorrect SMTP configuration
-3. Missing JWT secret
-
-### Quick Setup Checklist
-
-Before running the application, ensure you have:
-
-1. Created `.env` files in both `backend/` and `grocery/` directories
-2. Configured MongoDB connection (local or MongoDB Atlas)
-3. Set up SMTP credentials (Ethereal.email recommended for development)
-4. Generated a strong JWT secret (at least 32 characters)
-5. Verified CORS and frontend URL settings
-
-For detailed instructions on each of these steps, please refer to [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md).
-
----
-
-## 6. Troubleshooting Password Reset Issues
-
-If you're experiencing issues with the password reset functionality:
-
-1. Check that your MongoDB connection is working
-2. Verify your SMTP configuration in the backend `.env` file
-3. Ensure all required environment variables are set
-4. Check the backend console logs for detailed error messages
-5. Make sure you're using a valid email address
-
-For step-by-step instructions, see [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md).
-
----
-
-## 7. Summary & Project Completeness
-
-- **Fully Realized Subsystems**:
-  - **Authentication**: High security JWT infrastructure over HTTP-only cookies, with complete fallback/revoke capability.
-  - **Orders & Inventory**: Robust checkout processes that properly adjust stock levels and enable admin supervision.
-  - **Auxiliary Systems**: Complete email notification engines, user reviews, and app monitoring are deployed.
-- **Design Choices**:
-  - While product browsing is dynamically powered by our backend API, cart management prioritizes an efficient frontend-first approach natively mapped in React, avoiding constant DB overhead until checkout.
-- Overall, FreshBasket represents a highly structured, scalable full-stack application leveraging best-in-class React and Node.js practices.
+**Aman Gusain**

@@ -79,6 +79,7 @@ const ResetPassword = () => {
                 helperText={errors.password ? errors.password.message : ''}
                 color="success"
                 variant="outlined"
+                autoComplete="new-password"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -100,6 +101,7 @@ const ResetPassword = () => {
                 helperText={errors.confirmPassword ? errors.confirmPassword.message : ''}
                 color="success"
                 variant="outlined"
+                autoComplete="new-password"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">

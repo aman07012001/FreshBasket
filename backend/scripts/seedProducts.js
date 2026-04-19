@@ -13,7 +13,6 @@ const STATIC_PRODUCTS = [
     items: [
       { name: 'Chicken Meat', price: 8.99,  unit: 'kg', reviews: 4.2, reviewCount: 18, stock: 80 },
       { name: 'Crab Meat',    price: 14.99, unit: 'kg', reviews: 4.6, reviewCount: 20, stock: 35 },
-      { name: 'Lamb Meat',    price: 12.99, unit: 'kg', reviews: 4.8, reviewCount: 32, stock: 30 },
     ],
   },
   {

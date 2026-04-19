@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FreshBasketContext } from '../../Layout/Layout';
 import { handleSessionStorage } from '../../../utils/utils';
 import PopUpDialog from '../../PopUpDialog/PopUpDialog';
+import { optimizeImage, getFallbackImage } from '../../../utils/image';
 
 const CartItemCard = ({ item }) => {
     const { id, name, img, quantity, unit, price, total } = item;
@@ -34,9 +35,13 @@ const CartItemCard = ({ item }) => {
                     {}
                     <div className='col flex items-center justify-center'>
                         <img
-                            src={img}
+                            src={optimizeImage(img, name)}
                             className='lg:h-16 h-10'
-                            alt={name} />
+                            alt={name}
+                            onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = getFallbackImage();
+                            }} />
                     </div>
 
                     <div className='col-span-2 overflow-hidden pt-2'>

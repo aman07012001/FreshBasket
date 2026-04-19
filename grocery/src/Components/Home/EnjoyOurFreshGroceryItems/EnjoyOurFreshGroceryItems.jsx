@@ -68,8 +68,8 @@ const EnjoyOurFreshGroceryItems = () => {
                 <div className='grid md:grid-cols-3 sm:grid-cols-2 
                 lg:gap-6 gap-x-5 gap-y-5'>
                     {!isLoading ?
-                        items.map(item => (
-                            <ProductCard key={item.id}
+                        items.map((item, i) => (
+                            <ProductCard key={item._id || item.id || i}
                                 product={item} />
                         ))
                         : Array.from({ length: 3 }).map((pd, i) => {
@@ -108,7 +108,7 @@ const ItemsToggler = ({ alignment, setAlignment }) => {
                     color='success'
                     variant={alignment === category.id ? 'contained' : 'text'}
                     key={category.id}
-                    onClick={(e) => setAlignment(Number.parseInt(e.target.value))}
+                    onClick={() => setAlignment(category.id)}
                     value={category.id}>
                     {category.name}
                 </Button>

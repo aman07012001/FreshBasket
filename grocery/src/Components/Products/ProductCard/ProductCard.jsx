@@ -9,7 +9,7 @@ import StarRating from '../../Reviews/StarRating';
 
 const ProductCard = ({ product }) => {
     const { img, name, price, reviews, reviewCount, quantity, unit } = product;
-    const optimizedImg = optimizeImage(img);
+    const optimizedImg = optimizeImage(img, name);
 
     const isMediumScreen = useMediaQuery('(min-width: 768px) and (max-width: 1024px)');
     const isSmallScreen = useMediaQuery('(max-width:768px)');
