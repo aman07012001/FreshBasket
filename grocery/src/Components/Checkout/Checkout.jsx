@@ -27,7 +27,13 @@ const Checkout = () => {
 
     const deliveryDetails = handleSessionStorage('get', 'deliveryDetails') || null;
 
-    const subtotal = Number.parseFloat(cartItems.reduce((total, item) => total + Number.parseFloat(item.total), 0));
+    const subtotal = Number.parseFloat(
+        cartItems.reduce((total, item) => {
+            const itemTotal = Number.parseFloat(item.total);
+            const fallback = (Number.parseFloat(item.price) || 0) * (Number.parseInt(item.quantity, 10) || 1);
+            return total + (Number.isNaN(itemTotal) ? fallback : itemTotal);
+        }, 0)
+    );
     const deliveryCharge = 5.99;
     const totalAmount = subtotal + deliveryCharge;
 
@@ -43,7 +49,7 @@ const Checkout = () => {
             setSuccess(true);
 
             const items = cartItems.map((item) => ({
-                productId: String(item.id ?? item.productId ?? ''),
+                productId: String(item._id ?? item.id ?? item.productId ?? ''),
                 name: item.name,
                 price: Number.parseFloat(item.price ?? item.unitPrice ?? item.total) || 0,
                 quantity: Number.parseInt(item.quantity ?? 1, 10) || 1,
@@ -111,7 +117,7 @@ const Checkout = () => {
             setSuccess(true);
 
             const items = cartItems.map((item) => ({
-                productId: String(item.id ?? item.productId ?? ''),
+                productId: String(item._id ?? item.id ?? item.productId ?? ''),
                 name: item.name,
                 price: Number.parseFloat(item.price ?? item.unitPrice ?? item.total) || 0,
                 quantity: Number.parseInt(item.quantity ?? 1, 10) || 1,

@@ -11,7 +11,13 @@ const OrderSummary = () => {
 
     const isMediumScreen = useMediaQuery('(max-width:1024px)');
 
-    const subtotal = Number.parseFloat(cartItems.reduce((total, item) => total + Number.parseFloat(item.total), 0));
+    const subtotal = Number.parseFloat(
+        cartItems.reduce((total, item) => {
+            const itemTotal = Number.parseFloat(item.total);
+            const fallback = (Number.parseFloat(item.price) || 0) * (Number.parseInt(item.quantity, 10) || 1);
+            return total + (Number.isNaN(itemTotal) ? fallback : itemTotal);
+        }, 0)
+    );
 
     return (
         <div className='flex justify-center md:pt-16 col md:col-span-4 lg:col-span-1'>

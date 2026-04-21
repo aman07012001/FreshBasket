@@ -3,51 +3,52 @@ import { Star } from '@mui/icons-material';
 import { useContext, useState } from 'react';
 import { FreshBasketContext } from '../../Layout/Layout';
 import { handleSessionStorage } from '../../../utils/utils';
-import SuccessAlert from '../../SuccessAlert/SuccessAlert';
 import { optimizeImage, getFallbackImage } from '../../../utils/image';
 import StarRating from '../../Reviews/StarRating';
 
 const ProductCard = ({ product }) => {
     const { img, name, price, reviews, reviewCount, quantity, unit } = product;
+    const productId = product._id || product.id;
     const optimizedImg = optimizeImage(img, name);
 
     const isMediumScreen = useMediaQuery('(min-width: 768px) and (max-width: 1024px)');
     const isSmallScreen = useMediaQuery('(max-width:768px)');
 
-    const [openAlert, setOpenAlert] = useState(false)
-    const { cartItemsState } = useContext(FreshBasketContext);
+    const { cartItemsState, showCartToast } = useContext(FreshBasketContext);
     const [cartItems, setCartItems] = cartItemsState;
 
     const handleAddToCartBtn = () => {
         let targetedProduct = product;
         let latestCartItems = cartItems;
 
-        const isTargetedProductAlreadyExist = cartItems.find(item => item.id === product.id)
+        const isTargetedProductAlreadyExist = cartItems.find(item =>
+            (item._id || item.id) === productId
+        );
         if (isTargetedProductAlreadyExist) {
             targetedProduct = {
                 ...isTargetedProductAlreadyExist,
                 quantity: isTargetedProductAlreadyExist.quantity + 1,
                 total: ((isTargetedProductAlreadyExist.quantity + 1) * isTargetedProductAlreadyExist.price).toFixed(2)
-            }
-            latestCartItems = cartItems.filter(item => item.id !== targetedProduct.id)
+            };
+            latestCartItems = cartItems.filter(item =>
+                (item._id || item.id) !== productId
+            );
+        } else {
+            // First time adding — ensure `total` is always present
+            targetedProduct = {
+                ...product,
+                quantity: product.quantity ?? 1,
+                total: (Number.parseFloat(product.price) * (product.quantity ?? 1)).toFixed(2),
+            };
         }
-        setCartItems([
-            targetedProduct,
-            ...latestCartItems
-        ])
-        handleSessionStorage('set', 'cartItems', [
-            targetedProduct,
-            ...latestCartItems
-        ])
-
-        setOpenAlert(!openAlert)
-    }
+        const updated = [targetedProduct, ...latestCartItems];
+        setCartItems(updated);
+        handleSessionStorage('set', 'cartItems', updated);
+        showCartToast(`${name} added to cart`);
+    };
 
     return (
         <div>
-            <SuccessAlert
-                state={[openAlert, setOpenAlert]}
-                massage={'Item added successfully'} />
 
             <Fade in={true}>
                 <Card sx={{ maxWidth: isSmallScreen ? 275 : 295, mx: 'auto', boxShadow: '0 2px 4px -1px rgb(0 0 0 / 0.1)', backgroundColor: 'white', position: 'relative' }}>

@@ -8,7 +8,8 @@ import PopUpDialog from '../../PopUpDialog/PopUpDialog';
 import { optimizeImage, getFallbackImage } from '../../../utils/image';
 
 const CartItemCard = ({ item }) => {
-    const { id, name, img, quantity, unit, price, total } = item;
+    const itemId = item._id || item.id;
+    const { name, img, quantity, unit, price, total } = item;
 
     const { cartItemsState } = useContext(FreshBasketContext);
     const [cartItems, setCartItems] = cartItemsState;
@@ -16,18 +17,18 @@ const CartItemCard = ({ item }) => {
     const [openDialog, setOpenDialog] = useState(false);
 
     const handleRemoveItem = () => {
-        const trimmedCart = cartItems.filter(item => item.id !== id)
-        setCartItems(trimmedCart)
-        handleSessionStorage('set', 'cartItems', trimmedCart)
-        setOpenDialog(!openDialog)
-    }
+        const trimmedCart = cartItems.filter(i => (i._id || i.id) !== itemId);
+        setCartItems(trimmedCart);
+        handleSessionStorage('set', 'cartItems', trimmedCart);
+        setOpenDialog(false);
+    };
 
     return (
         <>
             <PopUpDialog
-                open={openDialog }
+                open={openDialog}
                 handleRemove={handleRemoveItem}
-                handleCancel={()=> setOpenDialog(!openDialog)}
+                handleCancel={() => setOpenDialog(false)}
                 message={'Want to remove this item'} />
 
             <Fade in={true}>
@@ -68,7 +69,7 @@ const CartItemCard = ({ item }) => {
                             {}
                             <div className='text-center'>
                                 <IconButton
-                                    onClick={()=> setOpenDialog(!openDialog)}
+                                    onClick={() => setOpenDialog(true)}
                                     sx={{ textTransform: 'capitalize', opacity: 0.7 }}
                                     color='inherit'
                                     size='small'>
@@ -85,40 +86,40 @@ const CartItemCard = ({ item }) => {
                             item={item} />
                     </div>
                 </div>
-            </Fade></>
+            </Fade>
+        </>
     );
 };
 
 const QuantityController = ({ item }) => {
-    const { unit, quantity, price, id } = item;
+    const itemId = item._id || item.id;
+    const { unit, quantity, price } = item;
     const [productQuantity, setProductQuantity] = useState(quantity);
 
     const { cartItemsState } = useContext(FreshBasketContext);
     const [cartItems, setCartItems] = cartItemsState;
 
     const handleReduce = () => {
-        productQuantity > 1 && setProductQuantity(productQuantity - 1)
-    }
+        productQuantity > 1 && setProductQuantity(productQuantity - 1);
+    };
     const handleIncrement = () => {
-        setProductQuantity(productQuantity + 1)
-    }
+        setProductQuantity(productQuantity + 1);
+    };
 
     useEffect(() => {
-        const updatedCart = cartItems.map(item => {
-            if (item.id === id) {
+        const updatedCart = cartItems.map(i => {
+            if ((i._id || i.id) === itemId) {
                 return {
-                    ...item,
+                    ...i,
                     quantity: productQuantity,
                     total: (productQuantity * price).toFixed(2)
-                }
-
-            } else {
-                return item
+                };
             }
-        })
-        setCartItems(updatedCart)
-        handleSessionStorage('set', 'cartItems', updatedCart)
-    }, [productQuantity])
+            return i;
+        });
+        setCartItems(updatedCart);
+        handleSessionStorage('set', 'cartItems', updatedCart);
+    }, [productQuantity]);
 
     return (
         <div className={'flex items-center justify-center my-auto lg:space-x-2.5 sm:space-x-2 space-x-1.5'}>
@@ -145,7 +146,7 @@ const QuantityController = ({ item }) => {
                 <Add fontSize='inherit' />
             </IconButton>
         </div>
-    )
-}
+    );
+};
 
 export default CartItemCard;

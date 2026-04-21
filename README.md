@@ -38,6 +38,19 @@ A modern, full-stack E-Commerce application designed to provide a seamless and h
 
 ---
 
+## 🔑 Demo Credentials
+
+Want to explore the app without signing up? Use the following test account:
+
+| Field    | Value                      |
+|----------|----------------------------|
+| Email    | `gusainaman007@gmail.com`  |
+| Password | `Amangusain001`            |
+
+> **Note:** This is a shared demo account — please don't change the password.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites

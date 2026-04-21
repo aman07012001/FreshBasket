@@ -1,30 +1,36 @@
 import { Outlet } from "react-router-dom";
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { handleSessionStorage } from "../../utils/utils";
 import { AuthContext } from "../../context/AuthContext";
 import { fetchCart, addToCart } from "../../services/cartService";
-
-
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 export const groceryContext = createContext();
-export const FreshBasketContext = createContext(); 
+export const FreshBasketContext = createContext();
 
 const cartItemsFromSessionStorage = handleSessionStorage('get', 'cartItems') || [];
 
 const Layout = () => {
     const [cartItems, setCartItems] = useState(cartItemsFromSessionStorage);
+    const [cartToastOpen, setCartToastOpen] = useState(false);
+    const [cartToastMsg, setCartToastMsg] = useState('Added to cart');
+
+    const showCartToast = useCallback((msg = 'Added to cart') => {
+        setCartToastMsg(msg);
+        setCartToastOpen(true);
+    }, []);
+
     const { user } = useContext(AuthContext);
 
-
     useEffect(() => {
-        if (!user) return; 
+        if (!user) return;
 
         let cancelled = false;
 
         async function syncCart() {
-
             const backendCart = await fetchCart();
             if (cancelled || !backendCart) return;
 
@@ -66,19 +72,37 @@ const Layout = () => {
 
         return () => { cancelled = true; };
 
-    }, [user]); 
+    }, [user]);
 
     return (
         <FreshBasketContext.Provider value={{
-            cartItemsState: [cartItems, setCartItems]
+            cartItemsState: [cartItems, setCartItems],
+            showCartToast,
         }}>
             <Navbar />
             <section className="min-h-screen pt-20">
                 <Outlet />
             </section>
             <Footer />
+
+            {/* Global "Added to cart" snackbar */}
+            <Snackbar
+                open={cartToastOpen}
+                autoHideDuration={2500}
+                onClose={() => setCartToastOpen(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <MuiAlert
+                    onClose={() => setCartToastOpen(false)}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%', fontWeight: 600, fontSize: '0.95rem' }}
+                >
+                    🛒 {cartToastMsg}
+                </MuiAlert>
+            </Snackbar>
         </FreshBasketContext.Provider>
     );
 };
 
-export default Layout;
+export default Layout;

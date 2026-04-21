@@ -27,6 +27,9 @@ import { ShoppingCartRounded } from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import SuccessAlert from "../SuccessAlert/SuccessAlert";
 import { useAuth } from "../../hooks/useAuth";
+import { useContext } from "react";
+import { FreshBasketContext } from "../Layout/Layout";
+
 
 function ScrollTop(props) {
   const { children, window } = props;
@@ -189,6 +192,9 @@ const Navbar = (props) => {
 
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { cartItemsState } = useContext(FreshBasketContext);
+  const [cartItems] = cartItemsState;
+  const cartCount = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   const [openAlert, setOpenAlert] = React.useState(false);
 
@@ -263,15 +269,28 @@ const Navbar = (props) => {
                     )}
 
                     {}
-                    <Tooltip title="Cart">
+                    <Tooltip title={cartCount > 0 ? `Cart (${cartCount} item${cartCount !== 1 ? 's' : ''})` : 'Cart (empty)'}>
                       <span>
                         <IconButton
                           onClick={() => navigate("/cart")}
-
                           sx={{ textTransform: "capitalize" }}
                           color="warning"
                         >
-                          <ShoppingCartRounded fontSize="inherit" />
+                          <Badge
+                            badgeContent={cartCount}
+                            color="error"
+                            invisible={cartCount === 0}
+                            sx={{
+                              '& .MuiBadge-badge': {
+                                fontWeight: 700,
+                                fontSize: '0.7rem',
+                                minWidth: '18px',
+                                height: '18px',
+                              }
+                            }}
+                          >
+                            <ShoppingCartRounded fontSize="inherit" />
+                          </Badge>
                         </IconButton>
                       </span>
                     </Tooltip>

@@ -19,7 +19,7 @@ const CartItems = () => {
                 {cartItems.map(cartItem => (
                     <CartItemCard
                         item={cartItem}
-                        key={cartItem.id} />
+                        key={cartItem._id || cartItem.id} />
                 ))}
 
             </div>
