@@ -13,7 +13,7 @@ A modern, full-stack E-Commerce application designed to provide a seamless and h
 ## 🌟 Key Features
 
 - **Advanced Authentication**: Highly secure JWT infrastructure over HTTP-Only cookies with session management.
-- **Product & Inventory Management**: Dynamic product catalog with category filtering, automated stock tracking, and real-time restock alerts.
+- **Product & Inventory Management**: Dynamic product catalog with category filtering, automated stock trac king, and real-time restock alerts.
 - **Shopping Cart & Checkout**: Efficient state-managed cart and seamless PayPal checkout integration.
 - **Admin Dashboard**: Comprehensive admin capabilities for order tracking, inventory assessment, and product moderation.
 - **Automated Emails**: Redis-backed email queue for order confirmations and password resets (via Nodemailer).

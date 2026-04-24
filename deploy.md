@@ -72,6 +72,7 @@ We will deploy the frontend as a **Static Site** on Render. Note: Vite builds ar
 
 If your application actively uses BullMQ and Redis for queued tasks (e.g., `emailWorker.js` in your `backend/package.json`):
 
+
 ### Setting up Redis
 1. On your Render dashboard, click **New +** > **Redis**.
 2. Name it (e.g., `freshbasket-redis`).
@@ -92,3 +93,4 @@ If your application actively uses BullMQ and Redis for queued tasks (e.g., `emai
 - [ ] **Test API Connections**: Try creating/fetching products or registering a test user to ensure the frontend successfully communicates with the backend, and that the backend connects to MongoDB.
 - [ ] **Test External Services**: Validate that images upload properly (Cloudinary) and dummy payments work (PayPal).
 - [ ] **CORS**: Ensure your backend CORS configuration permits requests specifically from your Render frontend URL.
+ 
