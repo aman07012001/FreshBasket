@@ -265,7 +265,7 @@ export class AuthenticatedApiClient {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); 
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s for Render cold starts
 
     try {
       const response = await fetch(fullUrl, {

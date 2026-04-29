@@ -444,18 +444,31 @@ export const AuthProvider = ({ children }) => {
         if (!result.success) {
           restoreAttempts++;
 
-          const backoffTime = Math.min(5000 * Math.pow(2, Math.min(restoreAttempts - 1, 3)), 60000);
+          const MAX_RESTORE_ATTEMPTS = 5;
+          if (restoreAttempts >= MAX_RESTORE_ATTEMPTS) {
+            console.warn(`🔐 Session restore gave up after ${MAX_RESTORE_ATTEMPTS} attempts.`);
+            setLoading(false);
+            return;
+          }
+
+          const backoffTime = Math.min(5000 * Math.pow(2, Math.min(restoreAttempts - 1, 3)), 40000);
           console.log(`🔐 Session restore failed, retrying in ${backoffTime}ms (attempt ${restoreAttempts})`);
 
           restoreTimer = setTimeout(attemptRestoreSession, backoffTime);
         } else {
-          restoreAttempts = 0; 
+          restoreAttempts = 0;
           console.log('🔐 Session restore successful, stopping retry loop');
         }
       } catch (error) {
         console.error('🔐 Session restore error:', error);
         restoreAttempts++;
-        const backoffTime = Math.min(5000 * Math.pow(2, Math.min(restoreAttempts - 1, 3)), 60000);
+        const MAX_RESTORE_ATTEMPTS = 5;
+        if (restoreAttempts >= MAX_RESTORE_ATTEMPTS) {
+          console.warn(`🔐 Session restore errored after ${MAX_RESTORE_ATTEMPTS} attempts, giving up.`);
+          setLoading(false);
+          return;
+        }
+        const backoffTime = Math.min(5000 * Math.pow(2, Math.min(restoreAttempts - 1, 3)), 40000);
         restoreTimer = setTimeout(attemptRestoreSession, backoffTime);
       } finally {
         isRestoring = false;

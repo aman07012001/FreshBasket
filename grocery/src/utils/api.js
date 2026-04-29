@@ -2,7 +2,7 @@
 
 import { buildApiUrl } from './urlUtils';
 
-const DEFAULT_TIMEOUT = 15000; 
+const DEFAULT_TIMEOUT = 60000; // 60s to handle Render free-tier cold starts (can take 30-60s)
 
 import { config } from '../config.js';
 
